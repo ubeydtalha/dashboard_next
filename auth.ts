@@ -26,6 +26,7 @@ export const { auth, signIn, signOut } = NextAuth({
     providers: [
         Credentials({
             async authorize(credentials) {
+                
                 const parsedCredentials = z
                     .object(
                         {
@@ -49,7 +50,7 @@ export const { auth, signIn, signOut } = NextAuth({
                     log('Incalid credentials');
                     return null;
                 }
-            }
-        })
-    ]
+            },
+        }),
+    ],
 });

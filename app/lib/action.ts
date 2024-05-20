@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation';
 
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
+import { log } from 'console';
  
 const FormSchema = z.object({
     id: z.string(),
@@ -53,9 +54,9 @@ export async function createInvoice(prevState: State, formData: FormData) {
 
 
     const { customerId, amount, status } = CreateInvoice.parse({
-        customerId: formaData.get('customerId'),
-        amount: formaData.get('amount'),
-        status: formaData.get('status')
+        customerId: formData.get('customerId'),
+        amount: formData.get('amount'),
+        status: formData.get('status')
     });
     const amountInCents = amount * 100;
     const date = new Date().toISOString().split('T')[0];
@@ -133,8 +134,11 @@ export async function authenticate(
   formData: FormData,
 ) {
   try {
+    log('Signing in with credentials');
     await signIn('credentials', formData);
   } catch (error) {
+    console.log('Error signing in:', error);
+    
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':
