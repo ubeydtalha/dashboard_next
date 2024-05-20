@@ -35,8 +35,8 @@ export type State = {
 };
 
 export async function createInvoice(prevState: State, formData: FormData) 
- : Promise<State>
-{
+ : Promise<State>{
+
 
 
     const validatedFields = CreateInvoice.safeParse({
