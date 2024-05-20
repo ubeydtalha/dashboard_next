@@ -9,9 +9,9 @@ import {
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
-import { UpdateInvoice } from './buttons';
-import { useFormState } from 'react-dom';
 
+import { useFormState } from 'react-dom';
+import { updateInvoice } from '@/app/lib/action';
 export default function EditInvoiceForm({
   invoice,
   customers,
@@ -20,7 +20,7 @@ export default function EditInvoiceForm({
   customers: CustomerField[];
 }) {
   const initialState = { message: null, errors: {} };
-  const updateInvoiceWithId = UpdateInvoice.bind(null,{ invoice.id});
+  const updateInvoiceWithId = updateInvoice.bind(null,invoice.id);
   const [state, dispatch] = useFormState(updateInvoiceWithId, initialState);
   return (
     <form

@@ -25,7 +25,8 @@ export const { auth, signIn, signOut } = NextAuth({
     ...authConfig,
     providers: [
         Credentials({
-            async authorize(credentials,req) {
+            async authorize(credentials: Partial<Record<string, unknown>>, req: Request): Promise<User | null> {
+                try {
                 log("\nCRERRRRRRRRRRR\n"+credentials.email+"\n"+credentials.password+"\n")
                 const parsedCredentials = z
                     .object(
@@ -50,6 +51,11 @@ export const { auth, signIn, signOut } = NextAuth({
                     log('Incalid credentials');
                     return null;
                 }
+            } catch (error) {
+                log('Error in credentials');
+                return null;
+            }
+            return null;
             },
         }),
     ],
