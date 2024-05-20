@@ -9,7 +9,7 @@ import bcrypt from 'bcrypt';
 import { log } from 'console';
 
 
-async function getUser(email: string): Promise<User | null> {
+async function getUser(email: string): Promise<User | undefined> {
     try {
         const user = await sql<User>`SELECT * FROM users Where email = ${email}`;
         return user.rows[0];
@@ -25,8 +25,8 @@ export const { auth, signIn, signOut } = NextAuth({
     ...authConfig,
     providers: [
         Credentials({
-            async authorize(credentials) {
-                
+            async authorize(credentials,req) {
+                log("\nCRERRRRRRRRRRR\n"+credentials.email+"\n"+credentials.password+"\n")
                 const parsedCredentials = z
                     .object(
                         {
@@ -35,7 +35,7 @@ export const { auth, signIn, signOut } = NextAuth({
                         }
                     )
                     .safeParse(credentials);
-                if (!parsedCredentials.success) {
+                if (parsedCredentials.success) {
                     const { email, password } = parsedCredentials.data;
                     const user = await getUser(email);
                     if (!user) {
